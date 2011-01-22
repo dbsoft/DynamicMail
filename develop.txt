@@ -1,0 +1,21 @@
+Diagram of how the different structures are related to each other.
+
+
+
+                                  plugin_list index (BackendPlugin)
+                                       ^
+                                       |
+                                   AccountInfo  <------->   MailFolder
+                                        ^     ^----             ^
+                                        |          \            |
+                                        |            \          v
+                                        v              ----> MailItem
+                                  AccountSettings
+
+
+
+AccountInfo backpointers are obtained using findaccount() which takes a pointer
+to any of the types as a parameter.  If a backpointer cannot be obtained NULL
+is returned.
+
+

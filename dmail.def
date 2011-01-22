@@ -1,0 +1,5 @@
+NAME DMAIL WINDOWAPI
+           
+DESCRIPTION 'Dynamic Mail'
+
+STACKSIZE 65536

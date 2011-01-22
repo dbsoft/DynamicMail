@@ -1,0 +1,33 @@
+# DynamicMail Minimal Plugin Makefile
+
+# Edit this as necessary.
+DWLIBPATH=d:\work\netlabs\dwindows\lib
+DWINCPATH=d:\work\netlabs\dwindows
+
+.SUFFIXES: .c .obj
+
+.all: \
+    minimal.dll
+
+.c.obj:
+  icc.exe  /DTCPV40HDRS /DOS2 /I. /I.. /I$(DWINCPATH) /Tdc /Ss /Wprorearet /Wpro+ /V"Minimal" /Tm+ /Ti /Gm /Gd- /G5 /Ge- /C /W3 /Wini+ /Wpar+ /Wpro+ /Wuse+ %s
+
+minimal.dll: \
+    minimal.obj
+    @echo " Link::Linker "
+    icc.exe @<<
+    /B" /NOE /de /ST:32768 /nologo /li"
+    /Fe"minimal.dll" minimal.def
+    minimal.obj
+    $(DWLIBPATH)\dw.lib 
+    $(DWLIBPATH)\dwcompat.lib
+<<
+  copy minimal.dll ..
+
+clean :
+        @if exist *.obj del *.obj
+        @if exist *.map del *.map
+        @if exist *.lib del *.lib
+        @if exist *.dll del *.dll
+        @if exist *.exe del *.exe
+

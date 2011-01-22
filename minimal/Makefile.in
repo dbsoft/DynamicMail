@@ -1,0 +1,78 @@
+CC	=	@CC@
+CCFLAGS	=	@CFLAGS@ -g -O2 -fPIC -Wall -D__UNIX__
+LFLAGS	=	@LIBS@
+INSTALL =	@INSTALL@
+INCPATH	=	-I.. -I.
+DESTDIR	=	..
+MLFLAGS	=	-L$(DESTDIR) 
+TARGET	=	minimal
+SRCS	=	minimal.c
+OBJECTS	=	minimal.o
+TARGET2 =	dwcompat
+VER_MAJ	=	1
+VER_MIN	=	0
+PREFIX	=	@prefix@
+
+.SUFFIXES:	.c .h
+
+.c.o:
+	$(CC) -c $(CCFLAGS) $(INCPATH) -o $@ $<
+    
+
+# Link flags shared objects
+SYSCONF_LFLAGS_SHOBJ	= -shared
+
+# Linking shared libraries
+#   - Build the $(TARGET) library, eg. lib$(TARGET).so.0.0
+#   - Place target in $(DESTDIR) - which has a trailing /
+#   - Usually needs to incorporate $(VER_MAJ) and $(VER_MIN)
+#
+SYSCONF_LINK_SHLIB	= gcc
+SYSCONF_LINK_TARGET_SHARED	= lib$(TARGET).so.$(VER_MAJ).$(VER_MIN)
+SYSCONF_LINK_LIB_SHARED	=  $(SYSCONF_LINK_SHLIB) -shared \
+				     -o $(SYSCONF_LINK_TARGET_SHARED) \
+				     $(OBJECTS) $(LFLAGS); \
+				 mv $(SYSCONF_LINK_TARGET_SHARED) $(DESTDIR); \
+				 cd $(DESTDIR); \
+				 rm -f lib$(TARGET).so lib$(TARGET).so.$(VER_MAJ); \
+				 ln -s $(SYSCONF_LINK_TARGET_SHARED) lib$(TARGET).so; \
+				 ln -s $(SYSCONF_LINK_TARGET_SHARED) lib$(TARGET).so.$(VER_MAJ)
+                                 
+# Linking static libraries
+#   - Build the $(TARGET) library, eg. lib$(TARGET).a
+#   - Place target in $(DESTDIR) - which has a trailing /
+#
+SYSCONF_AR		= ar cqs
+SYSCONF_LINK_TARGET_STATIC = lib$(TARGET).a
+SYSCONF_LINK_LIB_STATIC	= rm -f $(DESTDIR)$(SYSCONF_LINK_TARGET_STATIC) ; \
+				 $(SYSCONF_AR) $(DESTDIR)$(SYSCONF_LINK_TARGET_STATIC) $(OBJECTS) 
+
+
+
+####### Build rules
+
+SYSCONF_LINK_TARGET = $(SYSCONF_LINK_TARGET_SHARED)
+SYSCONF_LINK_LIB = $(SYSCONF_LINK_LIB_SHARED)
+
+all: $(SYSCONF_LINK_TARGET)
+
+install:
+		cd $(DESTDIR); \
+		$(INSTALL) $(SYSCONF_LINK_TARGET)  $(PREFIX)/lib; \
+		$(INSTALL) $(SYSCONF_LINK_TARGET2) $(PREFIX)/lib; \
+		cd $(PREFIX)/lib; \
+		rm -f lib$(TARGET).so lib$(TARGET).so.$(VER_MAJ); \
+		ln -s $(SYSCONF_LINK_TARGET_SHARED)  lib$(TARGET).so; \
+		ln -s $(SYSCONF_LINK_TARGET_SHARED)  lib$(TARGET).so.$(VER_MAJ); \
+		rm -f lib$(TARGET2).so lib$(TARGET2).so.$(VER_MAJ); \
+		ln -s $(SYSCONF_LINK_TARGET_SHARED2) lib$(TARGET2).so; \
+		ln -s $(SYSCONF_LINK_TARGET_SHARED2) lib$(TARGET2).so.$(VER_MAJ)
+                
+clean:
+	rm -f *.so
+	rm -f *.o
+	rm -f *~
+	rm -f *.a
+        
+$(SYSCONF_LINK_TARGET): $(OBJECTS) 
+	$(SYSCONF_LINK_LIB)

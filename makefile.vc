@@ -1,0 +1,55 @@
+# DynamicMail Makefile for Win32
+
+# Change these as needed
+DWLIBDIR=\netlabs\dwindows\lib
+DWINCDIR=\netlabs\dwindows
+
+CC = cl
+CFLAGS = -c -G5 -GD -Zp1 -DWIN32 -D__WIN32__ -DMSVC -I. -I$(DWINCDIR)
+CFLAGS_DEBUG = -Zi
+CFLAGS_COMPILE = -MTd
+LIBS = wsock32.lib kernel32.lib user32.lib comctl32.lib gdi32.lib advapi32.lib shell32.lib comdlg32.lib $(DWLIBDIR)\dw.lib $(DWLIBDIR)\dwcompat.lib
+RES = 
+LINKFLAGS = -machine:i386 -debug:full -debugtype:cv
+DLLLINKFLAGS = -dll
+LINK = link
+DEFFILE = dmail.def
+
+OBJS =	dmail.obj \
+	backend.obj \
+	receive.obj \
+	send.obj \
+	parse.obj \
+	account.obj \
+	datetime.obj \
+	winmain.obj
+	
+all: dmail.exe
+
+clean:
+	-erase *.dll
+        -erase *.exe
+        -erase *.opt
+        -erase *.lib
+        -erase *.obj
+        -erase *.map
+        -erase *.pdb
+        -erase *.ilk
+        -erase *.exp
+        -erase *.res
+        -erase *~
+        
+dmailw.res: dmailw.rc
+	rc -r dmailw.rc
+
+dmail.exe: $(OBJS) dmailw.res
+	$(LINK) @<<
+-out:$(@) -def:$(DEFFILE) -subsystem:windows
+$(LINKFLAGS)
+$(OBJS)
+$(LIBS)
+dmailw.res
+<<
+        
+.c.obj:
+	$(CC) $(CFLAGS) $(CFLAGS_DEBUG) $(CFLAGS_COMPILE) $*.c

@@ -1,0 +1,44 @@
+# $Id: makefile.emx,v 1.5 2005/04/17 11:36:53 nuke Exp $ 
+
+# Dynamic Mail Makefile
+
+CC = gcc
+RM = rm -f
+RC = rc
+MAKE = make
+COMPRESS = lxlite
+
+DEFS =
+LIBS =
+
+CFLAGS = -O2 -g -Zomf -Zmt -D__ST_MT_ERRNO__ -I. -Wall
+LDFLAGS = -lsocket
+RCFLAGS = -r
+
+
+OBJECTS = dmail.o backend.o receive.o send.o parse.o account.o datetime.o
+
+SOURCES = dmail.c backend.c receive.c send.c parse.c account.c datetime.c
+
+all: dmail.exe
+
+$(OBJECTS):
+	$(CC) $(CFLAGS) -c $<	
+
+dmail.exe:  $(OBJECTS)
+	$(RC) $(RCFLAGS) dmail.rc
+	$(CC) $(CFLAGS) $(DEFS) -o dmail.exe $(OBJECTS) $(LDFLAGS) -ldw -ldwcompat dmail.def dmail.res
+#	$(COMPRESS) dmail.exe
+
+clean: 
+	$(RM) $(OBJECTS) dmail.exe dmail.res
+
+dmail.o: dmail.c dmail.h backend.h
+backend.o: backend.c backend.h
+receive.o: receive.c sendrecv.h
+send.o: send.c sendrecv.h
+parse.o: parse.c parse.h
+account.o: account.c
+datetime.o: datetime.c datetime.h
+dmail.res: dmail.rc dmail.h
+

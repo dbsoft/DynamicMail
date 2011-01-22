@@ -1,0 +1,27 @@
+/*#include <windows.h>*/
+
+#include "dmail.h"
+
+
+NEWTAB BITMAP          "win\\newtab.bmp"
+REMOVETAB BITMAP       "win\\remtab.bmp"
+CONNECT BITMAP         "win\\connect.bmp"
+DISCONNECT BITMAP      "win\\disconnect.bmp"
+IDM_EXIT BITMAP        "win\\exit.bmp"
+ADDTOQ BITMAP          "win\\queue.bmp"
+REMOVEFROMQ BITMAP     "win\\unqueue.bmp"
+FLUSHQ BITMAP          "win\\flush.bmp"
+SAVETITLE BITMAP       "win\\save.bmp"
+UNSAVETITLE BITMAP     "win\\unsave.bmp"
+ADMIN BITMAP           "win\\admin.bmp"
+PB_CHANGE BITMAP       "win\\change.bmp"
+IDM_PREFERENCES BITMAP "win\\preferences.bmp"
+IDM_GENERALHELP BITMAP "win\\help.bmp"
+IDM_ABOUT BITMAP       "win\\about.bmp"
+
+LOGO BITMAP      "win\\handyftp.bmp"
+
+MAIN_FRAME ICON "win\\handyftp.ico"
+FILEICON ICON   "win\\FILE.ICO"
+FOLDERICON ICON "win\\FOLDER.ICO"
+LINKICON ICON "win\\LINK.ICO"

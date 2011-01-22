@@ -1,0 +1,36 @@
+# $Id: makefile.emx,v 1.3 2005/04/17 11:36:53 nuke Exp $ 
+
+# Dynamic Mail Makefile
+
+CC = gcc
+RM = rm -f
+RC = rc
+MAKE = make
+COMPRESS = lxlite
+
+DEFS =
+LIBS =
+
+CFLAGS = -O2 -g -Zomf -Zmt -Zdll -Zcrtdll -D__ST_MT_ERRNO__ -I. -I.. -I/usr/local/mysql/include -Wall
+LDFLAGS = -lsocket -L/usr/local/mysql/lib -lmysqlclient
+RCFLAGS = -r
+
+
+OBJECTS = mysqlplg.o
+
+SOURCES = mysqlplg.c
+
+all: mysqlplg.dll
+
+$(OBJECTS):
+	$(CC) $(CFLAGS) -c $<	
+
+mysqlplg.dll:  $(OBJECTS)
+	$(CC) $(CFLAGS) $(DEFS) -o mysqlplg.dll $(OBJECTS) $(LDFLAGS) -ldw -ldwcompat mysqlplg.def
+	copy mysqlplg.dll ..
+
+clean: 
+	$(RM) $(OBJECTS) mysqlplg.dll
+
+mysqlplg.o: mysqlplg.c mysqlplg.h
+

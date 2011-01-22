@@ -1,0 +1,47 @@
+# DynamicMail Makefile
+
+# Edit this as necessary.
+DWLIBPATH=d:\work\netlabs\dwindows\lib
+DWINCPATH=d:\work\netlabs\dwindows
+
+.SUFFIXES: \
+	.c .obj
+
+CFLAGS = /Ti /DOS2 /DTCPV40HDRS /I. /I$(DWINCPATH) /Sm /Ss /Q /Gm /Gt /C
+LDFLAGS = /DE /optfunc
+
+
+OBJECTS = dmail.obj backend.obj receive.obj send.obj parse.obj account.obj datetime.obj
+
+SOURCES = dmail.c backend.c receive.c send.c parse.c account.c datetime.c
+
+all: dmail.exe
+
+$(OBJECTS):
+	icc $(CFLAGS) %s	
+
+dmail.exe:  $(OBJECTS)
+	rc -r dmail.rc
+	icc @<<
+	 /B" $(LDFLAGS)"
+	 /Fedmail.exe
+	 so32dll.lib tcp32dll.lib $(DWLIBPATH)\dw.lib $(DWLIBPATH)\dwcompat.lib
+	 $(OBJECTS)
+	 dmail.def
+<<
+	rc -x2 dmail.res dmail.exe
+#	lxlite sfx.exe
+
+clean: 
+	rm $(OBJECTS) dw.obj dmail.exe dmail.res
+
+
+dmail.obj: dmail.c dmail.h backend.h
+backend.obj: backend.c backend.h
+receive.obj: receive.c sendrecv.h
+send.obj: send.c sendrecv.h
+parse.obj: parse.c parse.h
+account.obj: account.c
+datetime.obj: datetime.c datetime.h
+dmail.res: dmail.rc dmail.h
+

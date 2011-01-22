@@ -1,0 +1,24 @@
+LIBRARY MINIMAL
+
+DESCRIPTION 'Minimal Dynamic Mail Backend'
+
+EXPORTS
+  backend_init                           @1
+  backend_shutdown                       @2
+  backend_openaccount                    @3
+  backend_newaccount                     @4
+  backend_closeaccount                   @5
+  backend_getaccounts                    @6
+  backend_freeaccounts                   @7
+  backend_getfolders                     @8
+  backend_newfolder                      @9
+  backend_delfolder                      @10
+  backend_getitems                       @11
+  backend_newitem                        @12
+  backend_delitem                        @13
+  backend_getmail                        @14
+  backend_newmail                        @15
+  backend_free                           @16
+  backend_newsettings                    @17
+  backend_getsettings                    @18
+

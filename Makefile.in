@@ -1,0 +1,58 @@
+# $Id: Makefile.in,v 1.4 2003/12/11 09:13:18 nuke Exp $ 
+
+# HandyFTP Makefile
+
+# Edit these as necessary.
+DWLIBDIR = /home/nuke/netlabs/dwindows/lib
+DWINCDIR = /home/nuke/netlabs/dwindows
+
+CC = @CC@
+RM = @RM@
+CP = @CP@
+MAKE = @MAKE@
+MKDIR = @MKDIR@
+INSTALL = @INSTALL@
+
+LIBS = @LIBS@
+INCLUDES = @INCLUDES@
+
+CFLAGS = @CFLAGS@ -I$(DWINCDIR) -DDW_RESOURCES
+LDFLAGS = @LDFLAGS@ -L$(DWLIBDIR) -ldw -ldwcompat
+
+
+OBJECTS = dmail.o backend.o receive.o send.o parse.o account.o datetime.o
+
+SOURCES = dmail.c backend.c receive.c send.c parse.c account.c datetime.c
+
+all: dmail
+
+$(OBJECTS):
+	$(CC) $(CFLAGS) $(INCLUDES) -c $<
+
+resources.o:
+	$(CC) $(CFLAGS) $(INCLUDES) -c gtk/resources.c
+
+dmail:  $(OBJECTS) resources.o
+	$(CC) $(CFLAGS) $(INCLUDES) -o dmail $(OBJECTS) resources.o $(LDFLAGS) $(LIBS)
+
+clean: 
+	$(RM) $(OBJECTS) resources.o dmail
+
+distclean: 
+	$(RM) $(OBJECTS) resources.o dmail *~ os2/*~ win/*~ gtk/*~ config.cache config.log config.status Makefile config.h
+
+install:
+	$(RM) -rf /usr/local/dmail
+	$(MKDIR)  /usr/local/dmail
+	$(CP) -f ../config/*.typ /usr/local/dmail
+	$(INSTALL) dmail /usr/local/bin
+        
+resources.o: gtk/resources.c
+dmail.o: dmail.c dmail.h config.h
+backend.o: backend.c backend.h
+receive.o: receive.c sendrecv.h
+send.o: send.c sendrecv.h
+parse.o: parse.c parse.h
+account.o: account.c userent.h
+datetime.o: datetime.c datetime.h
+

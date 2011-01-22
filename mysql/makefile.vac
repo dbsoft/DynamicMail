@@ -1,0 +1,34 @@
+# DynamicMail mysqlplg Plugin Makefile
+
+# Edit this as necessary.
+DWLIBPATH=d:\work\netlabs\dwindows\lib
+DWINCPATH=d:\work\netlabs\dwindows
+
+.SUFFIXES: .c .obj
+
+.all: \
+    mysqlplg.dll
+
+.c.obj:
+  icc.exe  /DTCPV40HDRS /DOS2 /I. /I.. /I$(DWINCPATH) /Tdc /Ss /Wprorearet /Wpro+ /V"mysqlplg" /Tm+ /Ti /Gm /Gd- /G5 /Ge- /C /W3 /Wini+ /Wpar+ /Wpro+ /Wuse+ %s
+
+mysqlplg.dll: \
+    mysqlplg.obj
+    @echo " Link::Linker "
+    icc.exe @<<
+    /B" /NOE /de /ST:32768 /nologo /li"
+    /Fe"mysqlplg.dll" mysqlplg.def
+    mysqlplg.obj
+    mysqlclient.lib 
+    $(DWLIBPATH)\dw.lib 
+    $(DWLIBPATH)\dwcompat.lib
+<<
+  copy mysqlplg.dll ..
+
+clean :
+        @if exist *.obj del *.obj
+        @if exist *.map del *.map
+        @if exist *.lib del *.lib
+        @if exist *.dll del *.dll
+        @if exist *.exe del *.exe
+
