@@ -17,7 +17,7 @@ LIBS = @LIBS@
 INCLUDES = @INCLUDES@
 
 CFLAGS = @CFLAGS@ -I$(DWINCDIR) -DDW_RESOURCES
-LDFLAGS = @LDFLAGS@ -L$(DWLIBDIR) -ldw -ldwcompat
+LDFLAGS = @LDFLAGS@ -L$(DWLIBDIR) -ldwindows -ldwcompat
 
 
 OBJECTS = dmail.o backend.o receive.o send.o parse.o account.o datetime.o

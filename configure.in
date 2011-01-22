@@ -37,10 +37,10 @@ if test x"$ac_cv_func_connect" = x"no"; then
   fi
 fi
 
-LIBS=`dw-config --libs`
-CFLAGS=`dw-config --cflags`
+LIBS=`dwindows-config --libs`
+CFLAGS=`dwindows-config --cflags`
 
-AC_CHECK_LIB(dw, dw_main,LIBS="$LIBS",AC_MSG_ERROR(Dynamic Windows library not found. HandyFTP cannot build without it.))
+AC_CHECK_LIB(dwindows, dw_main,LIBS="$LIBS",AC_MSG_ERROR(Dynamic Windows library not found. HandyFTP cannot build without it.))
 
 AC_CHECK_LIB(sun, getpwnam, LIBS="$LIBS -lsun",)
 AC_CHECK_LIB(dgc, inet_addr, LIBS="$LIBS -ldgc",)
