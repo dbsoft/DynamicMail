@@ -1614,7 +1614,7 @@ int main(int argc, char *argv[])
 	 * broken by default.
 	 */
 	if(!config.plugins[0])
-		config.plugins[0] = strdup("mysqlplg");
+		config.plugins[0] = strdup("minimal");
 
 	while(config.plugins[z] && z < PLUGIN_MAX)
         {
