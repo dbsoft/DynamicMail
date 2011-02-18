@@ -1,4 +1,4 @@
-/* $Id: dmail.h,v 1.3 2003/12/11 21:07:55 nuke Exp $ */
+/* $Id: dmail.h,v 1.4 2005/06/08 15:53:52 crazybonz Exp $ */
 #ifndef _DMAIL_H
 #define _DMAIL_H
 
@@ -57,6 +57,8 @@
 #define FILEICON 356
 #define FOLDERICON 357
 #define LINKICON 365
+
+#define DLG_ABOUT 1202
 
 #define TB_SEPARATOR -1
 

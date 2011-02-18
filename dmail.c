@@ -1,9 +1,11 @@
-/* $Id: dmail.c,v 1.19 2005/04/17 10:55:55 nuke Exp $ */
+/* $Id: dmail.c,v 1.20 2005/06/08 15:53:52 crazybonz Exp $ */
 
 #include "compat.h"
 #include "dw.h"
 #include "backend.h"
 #include "dmail.h"
+#include "site.h"
+#include "dmailextr.h"
 #include "sendrecv.h"
 #include "parse.h"
 
@@ -17,6 +19,7 @@ DmailConfig config;
 HMTX mutex;
 char empty_string[] = "";
 
+HWND in_about = 0, hwndNBK;
 HWND stext1, stext2, stext3;
 
 ULONG fileicon, foldericon, linkicon;
@@ -25,6 +28,7 @@ ULONG fileicon, foldericon, linkicon;
 char *contexttext = NULL;
 int message_dialog(MailParsed *mp, int readonly, int reply, char *text);
 int modal_account_dialog(AccountSettings *as);
+int currentpage=-1, pagescreated = 0, newpage = -1, firstpage = TRUE;
 void DWSIGNAL account_dialog(HWND handle, void *data);
 
 typedef struct _ip {
@@ -334,6 +338,23 @@ void setfoldercount(MailFolder *mf, int count)
 	dw_window_set_text(stext1, textbuf);
 	dw_window_set_data(stext1, "count", (void *)count);
 }
+
+int DWSIGNAL generic_cancel(HWND window, void *data)
+{
+        UserEntry *param = (UserEntry *)data;
+
+        if(param)
+        {
+                dw_window_destroy(param->window);
+                if(param->busy)
+                        *param->busy = 0;
+                if(param->data)
+                        free(param->data);
+                free(param);
+        }
+        return FALSE;
+}
+
 
 /* Open a mail viewer window when double clicking on a mail item */
 int DWSIGNAL deleteitem(HWND hwnd, void *data)
@@ -851,7 +872,88 @@ void *messageFunctions[] = { (void *)send_message, NULL, NULL, NULL, NULL,
 						  NULL, NULL, NULL, NULL, NULL,
 						  NULL, NULL, NULL, NULL, NULL,
 						  NULL, NULL, NULL, NULL, (void *)show_raw,
-						  NULL, NULL };
+						  NULL, (void *)abouttab };
+
+
+/* Create the about box */
+void about(void)
+{
+	HWND infowindow, mainbox, logo, okbutton, buttonbox, stext, mle;
+	UserEntry *param = malloc(sizeof(UserEntry));
+	ULONG flStyle = DW_FCF_TITLEBAR | DW_FCF_SHELLPOSITION | DW_FCF_DLGBORDER;
+	ULONG point = -1;
+	char *greets = "Thanks to the OS/2 Netlabs, OS2.org, " \
+                      "\r\nAnd of course Brian for starting it. ;)";
+
+	if(in_about)
+	{
+		dw_window_show(in_about);
+		return;
+	}
+
+	in_about = infowindow = dw_window_new(HWND_DESKTOP, locale_string("About DMail", 54), flStyle);
+
+	mainbox = dw_box_new(BOXVERT, 5);
+
+	dw_box_pack_start(infowindow, mainbox, 0, 0, TRUE, TRUE, 0);
+
+	buttonbox = dw_box_new(BOXHORZ, 0);
+
+	dw_box_pack_start(mainbox, buttonbox, 0, 0, TRUE, FALSE, 0);
+
+	logo = dw_bitmap_new(100);
+
+	dw_window_set_bitmap(logo, LOGO, NULL);
+
+	dw_box_pack_start(buttonbox, 0, 50, 30, TRUE, FALSE, 0);
+	dw_box_pack_start(buttonbox, logo, 324, 172, FALSE, FALSE, 2);
+	dw_box_pack_start(buttonbox, 0, 50, 30, TRUE, FALSE, 0);
+
+	stext = dw_text_new("DynamicMail (c) 2000-2005 Brian Smith", 0);
+	dw_window_set_style(stext, DW_DT_CENTER | DW_DT_VCENTER, DW_DT_CENTER | DW_DT_VCENTER);
+	dw_box_pack_start(mainbox, stext, 10, 20, TRUE, TRUE, 0);
+
+	mle = dw_mle_new(100L);
+
+	dw_box_pack_start(mainbox, mle, 130, 150, TRUE, TRUE, 2);
+
+	dw_mle_set_editable(mle, FALSE);
+#if __WIN32__
+	dw_window_set_color(mle, DW_CLR_BLACK, DW_CLR_WHITE);
+#endif
+	dw_mle_set_word_wrap(mle, TRUE);
+
+	/* Buttons */
+	buttonbox = dw_box_new(BOXHORZ, 0);
+
+	dw_box_pack_start(mainbox, buttonbox, 0, 0, TRUE, TRUE, 0);
+
+	okbutton = dw_button_new("Ok", 1001L);
+
+	dw_box_pack_start(buttonbox, 0, 50, 30, TRUE, FALSE, 0);
+	dw_box_pack_start(buttonbox, okbutton, 50, 40, FALSE, FALSE, 2);
+	dw_box_pack_start(buttonbox, 0, 50, 30, TRUE, FALSE, 0);
+
+	param->window = infowindow;
+	param->data = NULL;
+	param->busy = &in_about;
+
+	point = dw_mle_import(mle, greets, point);
+
+	dw_signal_connect(okbutton, DW_SIGNAL_CLICKED, DW_SIGNAL_FUNC(generic_cancel), (void *)param);
+
+	dw_window_set_size(infowindow, 460, 441);
+
+	dw_window_show(infowindow);
+}
+
+/* IDM_ABOUT */
+int DWSIGNAL abouttab(HWND hwnd, void *data)
+{
+/*        if(validatecurrentpage())  */
+                about();
+        return FALSE;
+}
 
 /* Generic multi-use function for creating mail reading and composing windows */
 int message_dialog(MailParsed *mp, int readonly, int reply, char *text)
@@ -1249,7 +1351,7 @@ void *mainFunctions[] = { (void *)check_mail, (void *)send_mail, NULL, NULL, NUL
 						  NULL, NULL, NULL, NULL, NULL,
 						  NULL, NULL, NULL, NULL, NULL,
 						  NULL, NULL, NULL, NULL, NULL,
-						  NULL, NULL };
+						  NULL, (void *)abouttab };
 
 /* Create the main window with a notebook and a menu. */
 void dmail_init(void)
@@ -1413,7 +1515,6 @@ void dmail_init(void)
 	menuitem = dw_menu_append_item(menubar, locale_string("~Help", 2), IDM_HELP, 0L, TRUE, FALSE, menu);
 }
 
-
 /* Save settings */
 void saveconfig(void)
 {
@@ -1487,7 +1588,7 @@ void loadconfig(void)
 /* The main entry point.  Notice we don't use WinMain() on Windows */
 int main(int argc, char *argv[])
 {
-	int cx, cy, z = 0;
+	int cx, cy, rc, z = 0;
 
 	dw_init(TRUE, argc, argv);
 
@@ -1513,10 +1614,10 @@ int main(int argc, char *argv[])
 	 * broken by default.
 	 */
 	if(!config.plugins[0])
-		config.plugins[0] = strdup("minimal");
+		config.plugins[0] = strdup("mysqlplg");
 
 	while(config.plugins[z] && z < PLUGIN_MAX)
-	{
+        {
 		if(load_backend(config.plugins[z]))
 			dw_messagebox("DynamicMail", DW_MB_OK | DW_MB_ERROR, "Could not load backend \"%s\"!", config.plugins[z]);
 		z++;

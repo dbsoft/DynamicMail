@@ -1,4 +1,4 @@
-/* $Id: dmail.rc,v 1.1 2002/12/21 09:12:24 nuke Exp $ */
+/* $Id: dmail.rc,v 1.2 2005/06/08 15:53:52 crazybonz Exp $ */
 
 
 /* OS/2 Warp Resource Script File - Created by Universal Resource Editor */
@@ -14,8 +14,8 @@
 #include "dmail.h"
 
 
-BITMAP NEWTAB          "os2\\newtab.bmp"
-BITMAP REMOVETAB       "os2\\remtab.bmp"
+BITMAP NEWTAB          "os2\\chkmail.bmp"
+BITMAP REMOVETAB       "os2\\sndmail1.bmp"
 BITMAP CONNECT         "os2\\connect.bmp"
 BITMAP DISCONNECT      "os2\\disconnect.bmp"
 BITMAP IDM_EXIT        "os2\\exit.bmp"
@@ -30,9 +30,9 @@ BITMAP IDM_PREFERENCES "os2\\preferences.bmp"
 BITMAP IDM_GENERALHELP "os2\\help.bmp"
 BITMAP IDM_ABOUT       "os2\\about.bmp"
 
-BITMAP      LOGO "os2\\handyftp.bmp"
+BITMAP      LOGO "os2\\dmail-chrome.bmp"
 
-ICON MAIN_FRAME "os2\\handyftp.ico"
+ICON MAIN_FRAME "os2\\dmail005.ico"
 ICON FILEICON   "os2\\FILE.ICO"
 ICON FOLDERICON "os2\\FOLDER.ICO"
 ICON LINKICON "os2\\LINK.ICO"
