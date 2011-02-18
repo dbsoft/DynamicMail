@@ -245,7 +245,7 @@ void API backend_newsettings(Account *acc, AccountSettings *set)
 }
 
 /* Generic function to parse information from a config file */
-void getline(FILE *f, char *entry, char *entrydata)
+void minimal_getline(FILE *f, char *entry, char *entrydata)
 {
 	char in[256];
 	int z;
@@ -293,7 +293,7 @@ void API backend_getsettings(Account *acc, AccountSettings *set)
 	{
 		while(!feof(fp))
 		{
-			getline(fp, entry, entrydata);
+			minimal_getline(fp, entry, entrydata);
 			if(strcasecmp(entry, "recvhosttype")==0)
 				set->RecvHostType = atoi(entrydata);
 			if(strcasecmp(entry, "recvhostname")==0)
