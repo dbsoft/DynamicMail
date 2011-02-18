@@ -94,7 +94,7 @@ void getipport(char *buffer, union ip4_32 *ip, union ip4_32 *port)
 }
 
 /* Generic function to parse information from a config file */
-void getline(FILE *f, char *entry, char *entrydata)
+void dmail_getline(FILE *f, char *entry, char *entrydata)
 {
 	char in[256];
 	int z;
@@ -1557,7 +1557,7 @@ void loadconfig(void)
 
 		while(!feof(fp))
 		{
-			getline(fp, entry, entrydata);
+			dmail_getline(fp, entry, entrydata);
 			if(strcasecmp(entry, "plugin")==0 && plugin < PLUGIN_MAX)
 			{
 				config.plugins[plugin] = strdup(entrydata);
