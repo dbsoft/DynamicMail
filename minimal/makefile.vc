@@ -6,12 +6,12 @@
 #DWINCDIR=\netlabs\dwindows
 
 CC = cl
-CFLAGS = -c -G5 -GD -Zp1 -DWIN32 -D__WIN32__ -DMSVC -DBUILD_DLL -I$(DWINCDIR) -I. -I..
+CFLAGS = -c -Zp1 -DWIN32 -D__WIN32__ -DMSVC -DBUILD_DLL -I$(DWINCDIR) -I. -I..
 CFLAGS_DEBUG = -Zi
 CFLAGS_COMPILE = -MTd
 LIBS = $(DWLIBDIR)\dw.lib $(DWLIBDIR)\dwcompat.lib
 RES = 
-LINKFLAGS = -machine:i386 -debugtype:cv
+LINKFLAGS = -machine:i386 -debug -debugtype:cv
 DLLLINKFLAGS = -dll
 LINK = link
 DEFFILE = minimalw.def
