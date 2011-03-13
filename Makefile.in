@@ -3,8 +3,8 @@
 # HandyFTP Makefile
 
 # Edit these as necessary.
-DWLIBDIR = /home/nuke/netlabs/dwindows/lib
-DWINCDIR = /home/nuke/netlabs/dwindows
+#DWLIBDIR = /home/nuke/netlabs/dwindows/lib
+#DWINCDIR = /home/nuke/netlabs/dwindows
 
 CC = @CC@
 RM = @RM@
