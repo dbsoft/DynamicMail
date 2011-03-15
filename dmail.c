@@ -22,7 +22,7 @@ char empty_string[] = "";
 HWND in_about = 0, hwndNBK;
 HWND stext1, stext2, stext3;
 
-ULONG fileicon, foldericon, linkicon;
+HICN fileicon, foldericon, linkicon;
 
 /* Used for popup menus */
 char *contexttext = NULL;
@@ -966,7 +966,7 @@ int message_dialog(MailParsed *mp, int readonly, int reply, char *text)
 
 	window = dw_window_new(HWND_DESKTOP, mp ? (mp->topic ? mp->topic : "") : "New Message", flStyle);
 
-	dw_window_set_icon(window, MAIN_FRAME);
+	dw_window_set_icon(window, (HICN)MAIN_FRAME);
 
 	if(readonly)
 		dw_window_set_data(window, "readonly", (void *)1);
@@ -1374,7 +1374,7 @@ void dmail_init(void)
 
 	hwndFrame = dw_window_new(HWND_DESKTOP, "DynamicMail", flStyle);
 
-	dw_window_set_icon(hwndFrame, MAIN_FRAME);
+	dw_window_set_icon(hwndFrame, (HICN)MAIN_FRAME);
 
 	mainbox = dw_box_new(BOXVERT, 0);
 
@@ -1627,7 +1627,7 @@ int main(int argc, char *argv[])
 
 	if(hwndFrame)
 	{
-		dw_window_set_icon(hwndFrame, MAIN_FRAME);
+		dw_window_set_icon(hwndFrame, (HICN)MAIN_FRAME);
 
 		dw_signal_connect(hwndFrame, DW_SIGNAL_DELETE, DW_SIGNAL_FUNC(exitfunc), NULL);
 
