@@ -157,7 +157,7 @@ void account_dialog_core(AccountSettings *as, int newaccount, int modal)
 
 	in_account = entrywindow = dw_window_new(HWND_DESKTOP, "Account Settings", flStyle);
 
-	dw_window_set_icon(entrywindow, MAIN_FRAME);
+	dw_window_set_icon(entrywindow, (HICN)MAIN_FRAME);
 
 	xbox = dw_box_new(BOXVERT, 3);
 
