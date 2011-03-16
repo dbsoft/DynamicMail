@@ -909,7 +909,7 @@ void about(void)
 	dw_box_pack_start(buttonbox, logo, 324, 172, FALSE, FALSE, 2);
 	dw_box_pack_start(buttonbox, 0, 50, 30, TRUE, FALSE, 0);
 
-	stext = dw_text_new("DynamicMail (c) 2000-2005 Brian Smith", 0);
+	stext = dw_text_new("DynamicMail (c) 2000-2011 Brian Smith", 0);
 	dw_window_set_style(stext, DW_DT_CENTER | DW_DT_VCENTER, DW_DT_CENTER | DW_DT_VCENTER);
 	dw_box_pack_start(mainbox, stext, 10, 20, TRUE, TRUE, 0);
 
@@ -1592,6 +1592,10 @@ int main(int argc, char *argv[])
 
 	dw_init(TRUE, argc, argv);
 
+#ifdef __MAC__
+    _dw_default_font("10.Geneva");
+#endif
+    
 	sockinit();
 
 	srand(time(NULL));
