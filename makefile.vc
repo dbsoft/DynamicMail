@@ -65,7 +65,7 @@ $(OBJS)
 $(LIBS)
 dmailw.res
 <<
-	mt.exe /manifest dmail.exe.manifest /outputresource:dmail.exe;1
+	mt.exe /manifest dmail.exe.manifest win\dmail.exe.$(TARGET_CPU).manifest /outputresource:dmail.exe;1
         
 .c.obj:
 	$(CC) $(CFLAGS) $(CFLAGS_DEBUG) $(CFLAGS_COMPILE) $*.c
