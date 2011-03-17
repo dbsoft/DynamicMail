@@ -5,13 +5,27 @@
 #DWLIBDIR=\netlabs\dwindows\lib
 #DWINCDIR=\netlabs\dwindows
 
+#
+# Configure settings for the target platform
+#	Default to x86 if not specified
+#
+!if "$(TARGET_CPU)" == ""
+TARGET_CPU=x86
+!endif
+
+!if "$(TARGET_CPU)" == "x86"
+PLATFORM_DEF = -DWIN32
+!else
+PLATFORM_DEF = -DWIN64
+!endif
+
 CC = cl
-CFLAGS = -c -Zp1 -DWIN32 -D__WIN32__ -DMSVC -DBUILD_DLL -I$(DWINCDIR) -I. -I..
+CFLAGS = -c $(PLATFORM_DEF) -D__WIN32__ -DMSVC -DBUILD_DLL -I$(DWINCDIR) -I. -I..
 CFLAGS_DEBUG = -Zi
 CFLAGS_COMPILE = -MTd
 LIBS = $(DWLIBDIR)\dw.lib $(DWLIBDIR)\dwcompat.lib
 RES = 
-LINKFLAGS = -machine:i386 -debug -debugtype:cv
+LINKFLAGS = -machine:$(TARGET_CPU) -manifest -debug -debugtype:cv
 DLLLINKFLAGS = -dll
 LINK = link
 DEFFILE = minimalw.def
@@ -39,7 +53,8 @@ $(LINKFLAGS) $(DLLLINKFLAGS)
 $(OBJS) $(RES)
 $(LIBS)
 <<
-        copy minimal.dll ..
+    mt.exe /manifest minimal.dll.manifest /outputresource:minimal.dll;2
+    copy minimal.dll ..
 
 .c.obj:
 	$(CC) $(CFLAGS) $(CFLAGS_DEBUG) $(CFLAGS_COMPILE) $*.c
