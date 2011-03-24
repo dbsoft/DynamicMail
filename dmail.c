@@ -988,6 +988,7 @@ int message_dialog(MailParsed *mp, int readonly, int reply, char *text)
 		if(messageItems[z] != -1)
 		{
 			tempbutton = dw_bitmapbutton_new(messageHelpItems[z], messageItems[z]);
+            dw_window_set_style(tempbutton, DW_BS_NOBORDER, DW_BS_NOBORDER);
 
 			if(messageFunctions[z])
 				dw_signal_connect(tempbutton, DW_SIGNAL_CLICKED, DW_SIGNAL_FUNC(messageFunctions[z]), (void *)window);
@@ -1390,6 +1391,7 @@ void dmail_init(void)
 		if(mainItems[z] != -1)
 		{
 			tempbutton = dw_bitmapbutton_new(mainHelpItems[z], mainItems[z]);
+            dw_window_set_style(tempbutton, DW_BS_NOBORDER, DW_BS_NOBORDER);
 
 			if(messageFunctions[z])
 				dw_signal_connect(tempbutton, DW_SIGNAL_CLICKED, DW_SIGNAL_FUNC(mainFunctions[z]), (void *)mainItems[z]);
