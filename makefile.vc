@@ -5,6 +5,8 @@
 #DWLIBDIR=\netlabs\dwindows\lib
 #DWINCDIR=\netlabs\dwindows
 
+TARGET=dmail
+
 #
 # Configure settings for the target platform
 #	Default to x86 if not specified
@@ -20,7 +22,7 @@ PLATFORM_DEF = -DWIN64
 !endif
 
 CC = cl
-CFLAGS = -c $(PLATFORM_DEF) -D__WIN32__ -DMSVC -I. -I$(DWINCDIR)
+CFLAGS = -c $(PLATFORM_DEF) -D__WIN32__ -DMSVC -D__TARGET__=\"$(TARGET)\" -I. -I$(DWINCDIR)
 CFLAGS_DEBUG = -Zi
 CFLAGS_COMPILE = -MTd
 LIBS = wsock32.lib kernel32.lib user32.lib comctl32.lib gdi32.lib advapi32.lib shell32.lib comdlg32.lib $(DWLIBDIR)\dw.lib $(DWLIBDIR)\dwcompat.lib

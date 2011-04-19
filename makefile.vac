@@ -4,10 +4,12 @@
 DWLIBPATH=d:\work\netlabs\dwindows\lib
 DWINCPATH=d:\work\netlabs\dwindows
 
+TARGET=dmail
+
 .SUFFIXES: \
 	.c .obj
 
-CFLAGS = /Ti /DOS2 /DTCPV40HDRS /I. /I$(DWINCPATH) /Sm /Ss /Q /Gm /Gt /C
+CFLAGS = /Ti /DOS2 /DTCPV40HDRS /D__TARGET__=\"$(TARGET)\" /I. /I$(DWINCPATH) /Sm /Ss /Q /Gm /Gt /C
 LDFLAGS = /DE /optfunc
 
 
