@@ -1410,7 +1410,7 @@ void dmail_init(void)
 
 	hwndContainer = dw_container_new(117L, TRUE);
 
-	if(!dw_container_setup(hwndContainer, flags, titles, 7, 3))
+	if(dw_container_setup(hwndContainer, flags, titles, 7, 3))
 		dw_messagebox("DynamicMail", DW_MB_OK | DW_MB_ERROR, "Error Creating Container!");
 
 	dw_container_set_column_width(hwndContainer, 0, 18);
