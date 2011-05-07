@@ -1,4 +1,4 @@
-#define DW_RESOURCE
+#define DW_RESOURCE_FILE
 
 /* XPMs */
 #include "FILE.xpm"
