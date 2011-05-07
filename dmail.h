@@ -66,7 +66,6 @@
 
 #define ACCOUNT_MAX   20
 
-#ifndef DW_RESOURCE
 typedef struct {
 	int                Type;
 	Account*           Acc;
@@ -108,6 +107,5 @@ void loadconfig(void);
 AccountSettings *findsettings(void *opaque);
 AccountInfo *findaccount(void *opaque);
 
-#endif
 #endif
 
