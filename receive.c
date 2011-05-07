@@ -299,7 +299,7 @@ void API Mail_Receive_Thread(void *data)
 
 	while(ai->Acc)
 	{
-		if(dw_event_wait(ai->RecvEve, 1000) > 0)
+		if(dw_event_wait(ai->RecvEve, 1000) == DW_ERROR_NONE)
 		{
 			/* Check mail! */
     		struct hostent *hostnm;
