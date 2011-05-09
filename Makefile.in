@@ -2,10 +2,6 @@
 
 # HandyFTP Makefile
 
-# Edit these as necessary.
-#DWLIBDIR = /home/nuke/netlabs/dwindows/lib
-#DWINCDIR = /home/nuke/netlabs/dwindows
-
 CC = @CC@
 RM = @RM@
 CP = @CP@
@@ -16,8 +12,8 @@ INSTALL = @INSTALL@
 LIBS = @LIBS@
 INCLUDES = @INCLUDES@
 
-CFLAGS = @CFLAGS@ -I$(DWINCDIR) -DDW_RESOURCES
-LDFLAGS = @LDFLAGS@ -L$(DWLIBDIR) -ldwindows -ldwcompat
+CFLAGS = @CFLAGS@ -DDW_RESOURCES
+LDFLAGS = @LDFLAGS@ -ldwindows -ldwcompat
 
 
 OBJECTS = dmail.o backend.o receive.o send.o parse.o account.o datetime.o
