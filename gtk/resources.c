@@ -74,7 +74,7 @@ char *_resource_data[RESOURCE_MAX] = {
 };
 
 typedef struct _resource_struct {
-	long resource_max, resource_id;
+	long resource_max, *resource_id;
 	char **resource_data;
 } DWResources;
 

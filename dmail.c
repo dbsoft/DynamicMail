@@ -336,7 +336,7 @@ void setfoldercount(MailFolder *mf, int count)
 	else
 		count = 0;
 	dw_window_set_text(stext1, textbuf);
-	dw_window_set_data(stext1, "count", (void *)count);
+	dw_window_set_data(stext1, "count", DW_INT_TO_POINTER(count));
 }
 
 int DWSIGNAL generic_cancel(HWND window, void *data)
@@ -360,13 +360,13 @@ int DWSIGNAL generic_cancel(HWND window, void *data)
 int DWSIGNAL deleteitem(HWND hwnd, void *data)
 {
 	MailItem *mi = (MailItem *)dw_container_query_start(hwndContainer, DW_CRA_SELECTED);
-	int plug = (int)dw_window_get_data(hwndContainer, "plug");
+	int plug = DW_POINTER_TO_INT(dw_window_get_data(hwndContainer, "plug"));
 	AccountInfo *ai = findaccount(mi);
 	MailFolder *mf = findfolder(ai, "Trash");
 
 	if(dw_messagebox("DynamicMail", DW_MB_YESNO | DW_MB_QUESTION, "Are you sure you want to delete the selected messages?"))
 	{
-		int deleted = 0, count = (int)dw_window_get_data(stext1, "count");
+		int deleted = 0, count = DW_POINTER_TO_INT(dw_window_get_data(stext1, "count"));
 
 		while(mi)
 		{
@@ -477,7 +477,7 @@ static int DWSIGNAL treecontextmenu(HWND hwnd, char *text, int x, int y, void *d
 int DWSIGNAL containerselect(HWND hwnd, char *text, void *data)
 {
 	MailItem *mi = (MailItem *)text;
-	int plug = (int)dw_window_get_data(hwndContainer, "plug");
+	int plug = DW_POINTER_TO_INT(dw_window_get_data(hwndContainer, "plug"));
 
 	if(mi && mi->Type == DATA_TYPE_ITEM)
 	{
@@ -501,7 +501,7 @@ int DWSIGNAL containerselect(HWND hwnd, char *text, void *data)
 int DWSIGNAL containerfocus(HWND hwnd, HWND treeitem, char *text, void *data)
 {
 	MailItem *mi = (MailItem *)text;
-	int plug = (int)dw_window_get_data(hwndContainer, "plug");
+	int plug = DW_POINTER_TO_INT(dw_window_get_data(hwndContainer, "plug"));
 
 	if(mi && mi->Type == DATA_TYPE_ITEM)
 	{
@@ -532,7 +532,7 @@ int DWSIGNAL tree_select(HWND handle, HTREEITEM item, char *text, void *date, vo
 	MailFolder *mf = (MailFolder *)itemdata;
 	int clear = TRUE;
 	HWND mle = (HWND)dw_window_get_data(hwndContainer, "mle");
-	int plug = (int)dw_window_get_data(hwndContainer, "plug");
+	int plug = DW_POINTER_TO_INT(dw_window_get_data(hwndContainer, "plug"));
 	MailItem *olditems = (MailItem *)cdata;
 	int count = 0;
 
@@ -556,7 +556,7 @@ int DWSIGNAL tree_select(HWND handle, HTREEITEM item, char *text, void *date, vo
 		if(ai)
 		{
 			plug = ai->Plug;
-			dw_window_set_data(hwndContainer, "plug", (void *)plug);
+			dw_window_set_data(hwndContainer, "plug", DW_INT_TO_POINTER(plug));
 			dw_window_set_data(hwndContainer, "account", (void *)ai);
 
 			mi = plugin_list[plug].getitems(mf->Acc, mf);
@@ -627,7 +627,7 @@ int DWSIGNAL exitfunc(HWND hwnd, void *data)
 /* Delete event */
 int DWSIGNAL message_deleteevent(HWND hwnd, void *data)
 {
-	int readonly = (int)dw_window_get_data(hwnd, "readonly");
+	int readonly = DW_POINTER_TO_INT(dw_window_get_data(hwnd, "readonly"));
 
 	if(readonly || (!readonly && dw_messagebox("DynamicMail", DW_MB_YESNO | DW_MB_QUESTION, "Are you sure you want to close this unsent message?")))
 	{
@@ -1257,7 +1257,7 @@ int DWSIGNAL new_message(HWND hwnd, void *data)
 
 void reply_dialog(HWND hwnd, MailItem *mi, int reply)
 {
-	int plug = (int)dw_window_get_data(hwndContainer, "plug");
+	int plug = DW_POINTER_TO_INT(dw_window_get_data(hwndContainer, "plug"));
 
 	if(mi && mi->Type == DATA_TYPE_ITEM)
 	{
@@ -1280,7 +1280,7 @@ void reply_dialog(HWND hwnd, MailItem *mi, int reply)
 int DWSIGNAL empty_trash(HWND hwnd, void *data)
 {
 	MailFolder *mf = (MailFolder *)data;
-	int n = 0, plug = (int)dw_window_get_data(hwndContainer, "plug");
+	int n = 0, plug = DW_POINTER_TO_INT(dw_window_get_data(hwndContainer, "plug"));
 	MailItem *mi = plugin_list[plug].getitems(mf->Acc, mf);
 	HWND mle = (HWND)dw_window_get_data(hwndContainer, "mle");
 

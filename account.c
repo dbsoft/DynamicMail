@@ -496,5 +496,5 @@ int modal_account_dialog(AccountSettings *as)
 
 	account_dialog_core(as, TRUE, TRUE);
 
-	return (int)dw_dialog_wait(dialog);
+	return DW_POINTER_TO_INT(dw_dialog_wait(dialog));
 }

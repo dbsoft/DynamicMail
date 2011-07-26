@@ -79,7 +79,8 @@ typedef struct {
 typedef struct {
 	char *plugins[PLUGIN_MAX];
 	char *accounts[ACCOUNT_MAX];
-	unsigned long x, y, width, height;
+    long x, y;
+	unsigned long width, height;
 	unsigned long hsplit, vsplit;
 } DmailConfig;
 

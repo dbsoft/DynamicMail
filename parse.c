@@ -161,7 +161,7 @@ void check_part(MailParsed *mp, char **start, char *part, char *raw, char **ret,
 				{
 					mp->text[*textcount] = calloc(1, partlen+1);
 					memcpy(mp->text[*textcount], part, partlen);
-					*textcount++;
+					(*textcount)++;
 				}
 			}
 			if(!mp)
@@ -192,7 +192,7 @@ void check_part(MailParsed *mp, char **start, char *part, char *raw, char **ret,
 				{
 					mp->html[*htmlcount] = calloc(1, partlen+1);
 					memcpy(mp->html[*htmlcount], part, partlen);
-					*htmlcount++;
+					(*htmlcount)++;
 				}
 			}
 			if(type == TYPE_ATTA)
@@ -201,7 +201,7 @@ void check_part(MailParsed *mp, char **start, char *part, char *raw, char **ret,
 				{
 					mp->attach[*attachcount] = calloc(1, partlen+1);
 					memcpy(mp->attach[*attachcount], part, partlen);
-					*attachcount++;
+					(*attachcount)++;
 				}
 			}
 		}
