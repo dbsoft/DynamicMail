@@ -8,19 +8,24 @@ CP = @CP@
 MAKE = @MAKE@
 MKDIR = @MKDIR@
 INSTALL = @INSTALL@
+TARGET = dmail
+DISPLAYNAME = DynamicMail
+
+include Version
+VER_REV =	@MERCURIAL@
 
 LIBS = @LIBS@
 INCLUDES = @INCLUDES@
 
-CFLAGS = @CFLAGS@ -DDW_RESOURCES
-LDFLAGS = @LDFLAGS@ -ldwindows -ldwcompat
+CFLAGS = @CFLAGS@  @ARCH@ -DDW_RESOURCES -DVER_MAJ=$(VER_MAJ) -DVER_MIN=$(VER_MIN) -DVER_REV=$(VER_REV) -DINSTALL_PREFIX=\"$(PREFIX)\" -D__TARGET__=\"$(TARGET)\"
+LDFLAGS = @LDFLAGS@
 
 
 OBJECTS = dmail.o backend.o receive.o send.o parse.o account.o datetime.o
 
 SOURCES = dmail.c backend.c receive.c send.c parse.c account.c datetime.c
 
-all: dmail
+all: $(TARGET)
 
 $(OBJECTS):
 	$(CC) $(CFLAGS) $(INCLUDES) -c $<
@@ -28,8 +33,10 @@ $(OBJECTS):
 resources.o:
 	$(CC) $(CFLAGS) $(INCLUDES) -c gtk/resources.c
 
-dmail:  $(OBJECTS) resources.o
-	$(CC) $(CFLAGS) $(INCLUDES) -o dmail $(OBJECTS) resources.o $(LDFLAGS) $(LIBS)
+$(TARGET):  $(OBJECTS) resources.o
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(TARGET) $(OBJECTS) resources.o $(LDFLAGS) $(LIBS)
+	-chmod +x mac/finishup.sh
+	-mac/finishup.sh "$(DISPLAYNAME)" "$(TARGET)"
 
 clean: 
 	$(RM) $(OBJECTS) resources.o dmail
