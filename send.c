@@ -3,7 +3,7 @@
  * the remote email server.
  */
 #include <string.h>
-#include <compat.h>
+#include <dwcompat.h>
 #include <dw.h>
 #include "backend.h"
 #include "dmail.h"

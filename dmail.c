@@ -1,6 +1,6 @@
 /* $Id: dmail.c,v 1.20 2005/06/08 15:53:52 crazybonz Exp $ */
 
-#include "compat.h"
+#include "dwcompat.h"
 #include "dw.h"
 #include "backend.h"
 #include "dmail.h"

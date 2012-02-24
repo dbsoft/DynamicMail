@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <compat.h>
+#include <dwcompat.h>
 #include <dw.h>
 #include "backend.h"
 #include "dmail.h"
