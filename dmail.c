@@ -916,9 +916,6 @@ void about(void)
 	dw_box_pack_start(mainbox, mle, 130, 150, TRUE, TRUE, 2);
 
 	dw_mle_set_editable(mle, FALSE);
-#if __WIN32__
-	dw_window_set_color(mle, DW_CLR_BLACK, DW_CLR_WHITE);
-#endif
 	dw_mle_set_word_wrap(mle, TRUE);
 
 	/* Buttons */
@@ -1188,8 +1185,6 @@ int message_dialog(MailParsed *mp, int readonly, int reply, char *text)
 	dw_mle_set_editable(mle, readonly ? FALSE : TRUE);
 	dw_mle_set_word_wrap(mle, TRUE);
 
-	dw_window_set_color(mle, DW_CLR_BLACK, DW_CLR_WHITE);
-
 	dw_box_pack_start(mainbox, mle, 100, 100, TRUE, TRUE, 0);
 
 	controlbox = dw_box_new(BOXHORZ, 0);
@@ -1424,8 +1419,6 @@ void dmail_init(void)
 
 	dw_window_set_data(hwndContainer, "mle", (void *)mle);
 
-	dw_window_set_color(mle, DW_CLR_BLACK, DW_CLR_WHITE);
-
 	dw_mle_set_word_wrap(mle, TRUE);
 	dw_mle_set_editable(mle, FALSE);
 
@@ -1593,7 +1586,7 @@ int main(int argc, char *argv[])
 	dw_init(TRUE, argc, argv);
 
 #ifdef __MAC__
-        dw_font_set_default("10.Geneva");
+	dw_font_set_default("10.Geneva");
 #endif
     
 	sockinit();
