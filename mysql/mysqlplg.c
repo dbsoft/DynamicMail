@@ -5,8 +5,8 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <string.h>
-#include <compat.h>
 #include <dw.h>
+#include <dwcompat.h>
 #include <mysql.h>
 #include "backend.h"
 #include "mysqlplg.h"

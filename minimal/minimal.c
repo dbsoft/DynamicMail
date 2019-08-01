@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <string.h>
-#include <compat.h>
+#include <dwcompat.h>
 #include <dw.h>
 #include "backend.h"
 #include "minimal.h"
@@ -137,7 +137,7 @@ char ** API backend_getaccounts(void)
 	char **ret = NULL;
 	DIR *dir;
 	struct dirent *ent;
-	struct stat bleah;
+	struct dwstat bleah;
 
 	if(!(dir = opendir(".")))
 		return NULL;
@@ -635,7 +635,7 @@ int API backend_newitem(Account *acc, MailFolder *mf, MailItem *mi)
 	AccountStruct *as = (AccountStruct *)acc;
 	char *namebuf;
 	FILE *tmp;
-	struct stat bleah;
+	struct dwstat bleah;
 	int pos;
 
 	if(!as || !mf || !mi)
@@ -764,7 +764,7 @@ char * API backend_getmail(Account *acc, MailFolder *mf, MailItem *mi, unsigned 
 	AccountStruct *as = (AccountStruct *)acc;
 	char *namebuf, *mailbuf = NULL;
 	FILE *tmp;
-	struct stat bleah;
+	struct dwstat bleah;
 	int pos;
 
 	if(!as || !mf || !mi || !len)
