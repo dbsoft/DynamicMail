@@ -654,9 +654,9 @@ int DWSIGNAL show_raw(HWND hwnd, void *data)
 		if(dw_window_get_data(window, "raw"))
 		{
 			dw_window_set_data(window, "raw", 0);
-			if(mp->text && mp->text[0])
+			if(mp->text[0])
 				dw_mle_import(mle, mp->text[0], -1);
-			else if(mp->html && mp->html[0])
+			else if(mp->html[0])
 				dw_mle_import(mle, mp->html[0], -1);
 		}
 		else
@@ -1157,9 +1157,9 @@ int message_dialog(MailParsed *mp, int readonly, int reply, char *text)
 	{
 		char *oldtext = NULL;
 
-		if(mp && mp->text && mp->text[0])
+		if(mp && mp->text[0])
 			oldtext = mp->text[0];
-		else if(mp && mp->html && mp->html[0])
+		else if(mp && mp->html[0])
 			oldtext = mp->html[0];
 		else 
 			oldtext = text;
@@ -1176,9 +1176,9 @@ int message_dialog(MailParsed *mp, int readonly, int reply, char *text)
 	}
 	else if(!reply)
 	{
-		if(mp && mp->text && mp->text[0])
+		if(mp && mp->text[0])
 			dw_mle_import(mle, mp->text[0], -1);
-		else if(mp && mp->html && mp->html[0])
+		else if(mp && mp->html[0])
 			dw_mle_import(mle, mp->html[0], -1);
 		else if(text)
 			dw_mle_import(mle, text, -1);
