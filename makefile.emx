@@ -11,9 +11,9 @@ COMPRESS = lxlite
 DEFS =
 LIBS =
 
-CFLAGS = -O2 -g -Zomf -Zmt -D__ST_MT_ERRNO__ -I. -Wall
-LDFLAGS = -lsocket
-RCFLAGS = -r
+CFLAGS = -O2 -g -Zomf -Zmt -D__ST_MT_ERRNO__ -I. -Wall -I$(DWINCPATH)
+LDFLAGS = -lsocket  -ldw -ldwcompat -L$(DWLIBPATH)
+RCFLAGS = -r -x1 -i .
 
 
 OBJECTS = dmail.o backend.o receive.o send.o parse.o account.o datetime.o
@@ -27,7 +27,7 @@ $(OBJECTS):
 
 dmail.exe:  $(OBJECTS)
 	$(RC) $(RCFLAGS) dmail.rc
-	$(CC) $(CFLAGS) $(DEFS) -o dmail.exe $(OBJECTS) $(LDFLAGS) -ldw -ldwcompat dmail.def dmail.res
+	$(CC) $(CFLAGS) $(DEFS) -o dmail.exe $(OBJECTS) $(LDFLAGS) dmail.def dmail.res
 #	$(COMPRESS) dmail.exe
 
 clean: 

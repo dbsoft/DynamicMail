@@ -11,9 +11,9 @@ COMPRESS = lxlite
 DEFS =
 LIBS =
 
-CFLAGS = -O2 -g -Zomf -Zmt -Zdll -Zcrtdll -D__ST_MT_ERRNO__ -I. -I.. -Wall
-LDFLAGS = -lsocket
-RCFLAGS = -r
+CFLAGS = -O2 -g -Zomf -Zmt -Zdll -Zcrtdll -D__ST_MT_ERRNO__ -I. -I.. -Wall -I$(DWINCPATH)
+LDFLAGS = -lsocket  -ldw -ldwcompat -L$(DWLIBPATH)
+RCFLAGS = -r -x1 -i .
 
 
 OBJECTS = minimal.o
@@ -26,7 +26,7 @@ $(OBJECTS):
 	$(CC) $(CFLAGS) -c $<	
 
 minimal.dll:  $(OBJECTS)
-	$(CC) $(CFLAGS) $(DEFS) -o minimal.dll $(OBJECTS) $(LDFLAGS) -ldw -ldwcompat minimal.def
+	$(CC) $(CFLAGS) $(DEFS) -o minimal.dll $(OBJECTS) $(LDFLAGS) minimal.def
 	copy minimal.dll ..
 
 clean: 
