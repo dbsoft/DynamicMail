@@ -6,6 +6,8 @@
 	<string>English</string>
 	<key>CFBundleExecutable</key>
 	<string>dmail</string>
+	<key>CFBundleIdentifier</key>
+	<string>org.dbsoft.DynamicMail</string>
 	<key>CFBundleIconFile</key>
 	<string>DynamicMail</string>
 	<key>CFBundleInfoDictionaryVersion</key>
