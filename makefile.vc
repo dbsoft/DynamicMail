@@ -7,6 +7,17 @@
 
 TARGET=dmail
 
+# Configure alternate compiler based on Clang/LLVM
+!if "$(CLANG)" == "Y"
+WLIB=llvm-lib.exe
+CC=clang-cl.exe
+LINK=lld-link.exe
+!else
+WLIB=lib.exe
+CC=cl.exe
+LINK=link.exe
+!endif
+
 #
 # Configure settings for the target platform
 #	Default to x86 if not specified
@@ -29,15 +40,13 @@ PLATFORM_DEF = -DWIN32
 PLATFORM_DEF = -DWIN64
 !endif
 
-CC = cl
-CFLAGS = -c $(PLATFORM_DEF) -D__WIN32__ -DMSVC -D__TARGET__=\"$(TARGET)\" -I. -I$(DWINCDIR)
+CFLAGS = -c $(PLATFORM_DEF) -D__WIN32__ -DMSVC -D__TARGET__=\"$(TARGET)\" -I. -I$(DWINCDIR) -D_CRT_SECURE_NO_WARNINGS
 CFLAGS_DEBUG = -Zi
 CFLAGS_COMPILE = -MTd
 LIBS = wsock32.lib kernel32.lib user32.lib comctl32.lib gdi32.lib advapi32.lib shell32.lib comdlg32.lib $(DWLIBDIR)\dw.lib $(DWLIBDIR)\dwcompat.lib
 RES = 
 LINKFLAGS = -machine:$(TARGET_CPU) -manifest -debug -debugtype:cv
 DLLLINKFLAGS = -dll
-LINK = link
 DEFFILE = dmail.def
 
 OBJS =	dmail.obj \
@@ -53,17 +62,17 @@ all: dmail.exe
 
 clean:
 	-erase *.dll
-        -erase *.exe
-        -erase *.opt
-        -erase *.lib
-        -erase *.obj
-        -erase *.map
-        -erase *.pdb
-        -erase *.ilk
-        -erase *.exp
-        -erase *.res
-        -erase *~
-        
+	-erase *.exe
+	-erase *.opt
+	-erase *.lib
+	-erase *.obj
+	-erase *.map
+	-erase *.pdb
+	-erase *.ilk
+	-erase *.exp
+	-erase *.res
+	-erase *~
+	
 dmailw.res: dmailw.rc
 	rc -r dmailw.rc
 
@@ -75,7 +84,7 @@ $(OBJS)
 $(LIBS)
 dmailw.res
 <<
-	mt.exe /manifest dmail.exe.manifest win\dmail.exe.$(TARGET_CPU).manifest /outputresource:dmail.exe;1
-        
+	mt.exe -manifest dmail.exe.manifest win\dmail.exe.$(TARGET_CPU).manifest -outputresource:dmail.exe;1
+
 .c.obj:
 	$(CC) $(CFLAGS) $(CFLAGS_DEBUG) $(CFLAGS_COMPILE) $*.c

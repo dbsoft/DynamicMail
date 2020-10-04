@@ -5,6 +5,17 @@
 #DWLIBDIR=\netlabs\dwindows\lib
 #DWINCDIR=\netlabs\dwindows
 
+# Configure alternate compiler based on Clang/LLVM
+!if "$(CLANG)" == "Y"
+WLIB=llvm-lib.exe
+CC=clang-cl.exe
+LINK=lld-link.exe
+!else
+WLIB=lib.exe
+CC=cl.exe
+LINK=link.exe
+!endif
+
 #
 # Configure settings for the target platform
 #	Default to x86 if not specified
@@ -27,15 +38,13 @@ PLATFORM_DEF = -DWIN32
 PLATFORM_DEF = -DWIN64
 !endif
 
-CC = cl
-CFLAGS = -c $(PLATFORM_DEF) -D__WIN32__ -DMSVC -DBUILD_DLL -I$(DWINCDIR) -I. -I..
+CFLAGS = -c $(PLATFORM_DEF) -D__WIN32__ -DMSVC -DBUILD_DLL -I$(DWINCDIR) -I. -I.. -D_CRT_SECURE_NO_WARNINGS
 CFLAGS_DEBUG = -Zi
 CFLAGS_COMPILE = -MTd
 LIBS = $(DWLIBDIR)\dw.lib $(DWLIBDIR)\dwcompat.lib mysqlclient.lib wsock32.lib advapi32.lib user32.lib
 RES = 
 LINKFLAGS = -machine:$(TARGET_CPU) -manifest -debug -debugtype:cv
 DLLLINKFLAGS = -dll
-LINK = link
 DEFFILE = mysqlplgw.def
 
 OBJS =	mysqlplg.obj
@@ -44,16 +53,16 @@ all: mysqlplg.dll
 
 clean:
 	-erase *.dll
-        -erase *.exe
-        -erase *.opt
-        -erase *.lib
-        -erase *.obj
-        -erase *.map
-        -erase *.pdb
-        -erase *.ilk
-        -erase *.exp
-        -erase *~
-        
+	-erase *.exe
+	-erase *.opt
+	-erase *.lib
+	-erase *.obj
+	-erase *.map
+	-erase *.pdb
+	-erase *.ilk
+	-erase *.exp
+	-erase *~
+	
 mysqlplg.dll: $(OBJS) $(DEFFILE)
 	$(LINK) @<<
 -out:$(@) -def:$(DEFFILE)
@@ -61,8 +70,8 @@ $(LINKFLAGS) $(DLLLINKFLAGS)
 $(OBJS) $(RES)
 $(LIBS)
 <<
-    mt.exe /manifest mysqlplg.dll.manifest /outputresource:mysqlplg.dll;2
-    copy mysqlplg.dll ..
+	mt.exe -manifest mysqlplg.dll.manifest -outputresource:mysqlplg.dll;2
+	copy mysqlplg.dll ..
 
 .c.obj:
 	$(CC) $(CFLAGS) $(CFLAGS_DEBUG) $(CFLAGS_COMPILE) $*.c
