@@ -38,7 +38,11 @@ PLATFORM_DEF = -DWIN32
 PLATFORM_DEF = -DWIN64
 !endif
 
-CFLAGS = -c $(PLATFORM_DEF) -D__WIN32__ -DMSVC -DBUILD_DLL -I$(DWINCDIR) -I. -I.. -D_CRT_SECURE_NO_WARNINGS
+# The Visual C CRT and other Windows components have deprecated lots of common functions
+# These options will hide the deprecation warnings; Comment the next line to see them
+CRT_FLAGS = -D_CRT_SECURE_NO_DEPRECATE -D_CRT_SECURE_NO_WARNING -D_WINSOCK_DEPRECATED_NO_WARNINGS
+
+CFLAGS = -c $(PLATFORM_DEF) -D__WIN32__ -DMSVC -DBUILD_DLL -I$(DWINCDIR) -I. -I.. $(CRT_FLAGS)
 CFLAGS_DEBUG = -Zi
 CFLAGS_COMPILE = -MTd
 LIBS = $(DWLIBDIR)\dw.lib $(DWLIBDIR)\dwcompat.lib
