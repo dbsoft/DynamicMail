@@ -27,7 +27,7 @@ SYSCONF_LFLAGS_SHOBJ	= -shared
 #   - Place target in $(DESTDIR) - which has a trailing /
 #   - Usually needs to incorporate $(VER_MAJ) and $(VER_MIN)
 #
-SYSCONF_LINK_SHLIB	= gcc
+SYSCONF_LINK_SHLIB	= @CC@
 SYSCONF_LINK_TARGET_SHARED	= lib$(TARGET).so.$(VER_MAJ).$(VER_MIN)
 SYSCONF_LINK_LIB_SHARED	=  $(SYSCONF_LINK_SHLIB) -shared \
 				     -o $(SYSCONF_LINK_TARGET_SHARED) \

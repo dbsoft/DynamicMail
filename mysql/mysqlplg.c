@@ -170,7 +170,7 @@ int login_dialog(void)
 
 int minversion(int major, int minor, int sub)
 {
-	char *version = mysql_get_server_info(&dmail_db);
+	const char *version = mysql_get_server_info(&dmail_db);
 	int smajor, sminor, ssub;
 
 	sscanf(version, "%d.%d.%d", &smajor, &sminor, &ssub);
