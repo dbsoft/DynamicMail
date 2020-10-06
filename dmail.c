@@ -96,25 +96,25 @@ void getipport(char *buffer, union ip4_32 *ip, union ip4_32 *port)
 /* Generic function to parse information from a config file */
 void dmail_getline(FILE *f, char *entry, char *entrydata)
 {
-	char in[256];
+	char in[256] = {0};
 	int z;
 
-	memset(in, 0, 256);
-	fgets(in, 255, f);
-
-	if(in[strlen(in)-1] == '\n')
-		in[strlen(in)-1] = 0;
-
-	if(in[0] != '#')
+	if(fgets(in, 255, f))
 	{
-		for(z=0;z<strlen(in);z++)
+		if(in[strlen(in)-1] == '\n')
+			in[strlen(in)-1] = 0;
+
+		if(in[0] != '#')
 		{
-			if(in[z] == '=')
+			for(z=0;z<strlen(in);z++)
 			{
-				in[z] = 0;
-				strcpy(entry, in);
-				strcpy(entrydata, &in[z+1]);
-				return;
+				if(in[z] == '=')
+				{
+					in[z] = 0;
+					strcpy(entry, in);
+					strcpy(entrydata, &in[z+1]);
+					return;
+				}
 			}
 		}
 	}

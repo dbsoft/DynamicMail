@@ -57,7 +57,7 @@ int API backend_shutdown(void)
 /* Open a mail account, allocating any needed resources */
 Account * API backend_openaccount(char *name)
 {
-    char *namebuf;
+	char *namebuf;
 	AccountStruct *as = malloc(sizeof(AccountStruct));
 
 	dw_mutex_lock(backend_mtx);
@@ -78,7 +78,7 @@ Account * API backend_openaccount(char *name)
 /* Open a mail account, allocating any needed resources */
 Account * API backend_newaccount(char *name)
 {
-    char *namebuf;
+	char *namebuf;
 	AccountStruct *as = malloc(sizeof(AccountStruct));
 	MailFolder mf;
 
@@ -247,25 +247,25 @@ void API backend_newsettings(Account *acc, AccountSettings *set)
 /* Generic function to parse information from a config file */
 void minimal_getline(FILE *f, char *entry, char *entrydata)
 {
-	char in[256];
+	char in[256] = {0};
 	int z;
 
-	memset(in, 0, 256);
-	fgets(in, 255, f);
-
-	if(in[strlen(in)-1] == '\n')
-		in[strlen(in)-1] = 0;
-
-	if(in[0] != '#')
+	if(fgets(in, 255, f))
 	{
-		for(z=0;z<strlen(in);z++)
+		if(in[strlen(in)-1] == '\n')
+	   		in[strlen(in)-1] = 0;
+
+		if(in[0] != '#')
 		{
-			if(in[z] == '=')
+			for(z=0;z<strlen(in);z++)
 			{
-				in[z] = 0;
-				strcpy(entry, in);
-				strcpy(entrydata, &in[z+1]);
-				return;
+				if(in[z] == '=')
+				{
+					in[z] = 0;
+					strcpy(entry, in);
+					strcpy(entrydata, &in[z+1]);
+					return;
+				}
 			}
 		}
 	}
@@ -789,9 +789,12 @@ char * API backend_getmail(Account *acc, MailFolder *mf, MailItem *mi, unsigned 
 
 	if(!stat(namebuf, &bleah) && (tmp = fopen(namebuf, FOPEN_READ_BINARY)))
 	{
-		mailbuf = malloc(bleah.st_size+1);
-		fread(mailbuf, bleah.st_size, 1, tmp);
-		mailbuf[bleah.st_size] = 0;
+		mailbuf = calloc(1, bleah.st_size+1);
+		if(mailbuf && !fread(mailbuf, bleah.st_size, 1, tmp))
+		{
+			free(mailbuf);
+			mailbuf = NULL;
+		}
 		fclose(tmp);
 		*len = bleah.st_size;
 	}
