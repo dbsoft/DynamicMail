@@ -1,8 +1,8 @@
 # DynamicMail Minimal Plugin Makefile
 
 # Edit this as necessary.
-DWLIBPATH=d:\work\netlabs\dwindows\lib
-DWINCPATH=d:\work\netlabs\dwindows
+#DWLIBPATH=d:\work\netlabs\dwindows\lib
+#DWINCPATH=d:\work\netlabs\dwindows
 
 .SUFFIXES: .c .obj
 
