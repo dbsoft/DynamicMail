@@ -61,6 +61,17 @@ fi
 LIBS=`dwindows-config --libs`
 CFLAGS=`dwindows-config --cflags`
 GRESOURCE=`dwindows-config --gresource`
+PLATFORM=`uname -s`
+
+if test x"$GRESOURCE" = x"enabled"; then
+  RESOURCE="gresources.o"
+else
+  RESOURCE="resources.o"
+fi
+
+if test x"$PLATFORM" = x"Darwin"; then
+  RESOURCE=""
+fi
 
 AC_CHECK_LIB(dwindows, dw_main,LIBS="$LIBS",AC_MSG_ERROR(Dynamic Windows library not found. DynamicMail cannot build without it.))
 
@@ -121,7 +132,7 @@ AC_SUBST(MKDIR)
 
 AC_SUBST(ARCH)
 
-AC_SUBST(GRESOURCE)
+AC_SUBST(RESOURCE)
 
 AC_OUTPUT(Makefile:Makefile.in)
 AC_OUTPUT(minimal/Makefile:minimal/Makefile.in)

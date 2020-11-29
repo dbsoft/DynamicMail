@@ -9,7 +9,7 @@ GRC = @GRC@
 MAKE = @MAKE@
 MKDIR = @MKDIR@
 INSTALL = @INSTALL@
-GRESOURCE = @GRESOURCE@
+RESOURCE = @RESOURCE@
 TARGET = dmail
 DISPLAYNAME = DynamicMail
 
@@ -32,35 +32,35 @@ all: $(TARGET)
 $(OBJECTS):
 	$(CC) $(CFLAGS) $(INCLUDES) -c $<
 
-resources.o:
-ifeq ($(GRESOURCE),enabled)
+gresources.o:
 	-chmod +x gtk/resources.sh
 	-gtk/resources.sh
 	$(GRC) --generate-source --target=gresources.c gtk/dmail.gresource.xml
-	$(CC) $(CFLAGS) $(INCLUDES) -c gresources.c -o resources.o
-else
-	$(CC) $(CFLAGS) $(INCLUDES) -c gtk/resources.c
-endif
+	$(CC) $(CFLAGS) $(INCLUDES) -c gresources.c
 
-$(TARGET):  $(OBJECTS) resources.o
-	$(CC) $(CFLAGS) $(INCLUDES) -o $(TARGET) $(OBJECTS) resources.o $(LDFLAGS) $(LIBS)
+resources.o:
+	$(CC) $(CFLAGS) $(INCLUDES) -c gtk/resources.c
+
+$(TARGET):  $(OBJECTS) $(RESOURCE)
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(TARGET) $(OBJECTS) $(RESOURCE) $(LDFLAGS) $(LIBS)
 	-chmod +x mac/finishup.sh
 	-mac/finishup.sh "$(DISPLAYNAME)" "$(TARGET)"
 
 clean: 
 	$(RM) $(OBJECTS) resources.o dmail
-	$(RM) -rf resources/
+	$(RM) -r resources/
 
 distclean: clean
 	$(RM) *~ os2/*~ win/*~ gtk/*~ config.cache config.log config.status Makefile config.h
 
 install:
-	$(RM) -rf /usr/local/dmail
+	$(RM) -r /usr/local/dmail
 	$(MKDIR)  /usr/local/dmail
 	$(CP) -f ../config/*.typ /usr/local/dmail
 	$(INSTALL) dmail /usr/local/bin
         
-resources.o: gtk/resources.c gtk/dmail.gresource.xml
+resources.o: gtk/resources.c
+gresources.o: gtk/dmail.gresource.xml
 dmail.o: dmail.c dmail.h config.h
 backend.o: backend.c backend.h
 receive.o: receive.c sendrecv.h
