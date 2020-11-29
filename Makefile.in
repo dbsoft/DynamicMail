@@ -5,9 +5,11 @@
 CC = @CC@
 RM = @RM@
 CP = @CP@
+GRC = @GRC@
 MAKE = @MAKE@
 MKDIR = @MKDIR@
 INSTALL = @INSTALL@
+GRESOURCE = @GRESOURCE@
 TARGET = dmail
 DISPLAYNAME = DynamicMail
 
@@ -31,7 +33,14 @@ $(OBJECTS):
 	$(CC) $(CFLAGS) $(INCLUDES) -c $<
 
 resources.o:
+ifeq ($(GRESOURCE),enabled)
+	-chmod +x gtk/resources.sh
+	-gtk/resources.sh
+	$(GRC) --generate-source --target=gresources.c gtk/dmail.gresource.xml
+	$(CC) $(CFLAGS) $(INCLUDES) -c gresources.c -o resources.o
+else
 	$(CC) $(CFLAGS) $(INCLUDES) -c gtk/resources.c
+endif
 
 $(TARGET):  $(OBJECTS) resources.o
 	$(CC) $(CFLAGS) $(INCLUDES) -o $(TARGET) $(OBJECTS) resources.o $(LDFLAGS) $(LIBS)
@@ -40,9 +49,10 @@ $(TARGET):  $(OBJECTS) resources.o
 
 clean: 
 	$(RM) $(OBJECTS) resources.o dmail
+	$(RM) -rf resources/
 
-distclean: 
-	$(RM) $(OBJECTS) resources.o dmail *~ os2/*~ win/*~ gtk/*~ config.cache config.log config.status Makefile config.h
+distclean: clean
+	$(RM) *~ os2/*~ win/*~ gtk/*~ config.cache config.log config.status Makefile config.h
 
 install:
 	$(RM) -rf /usr/local/dmail
@@ -50,7 +60,7 @@ install:
 	$(CP) -f ../config/*.typ /usr/local/dmail
 	$(INSTALL) dmail /usr/local/bin
         
-resources.o: gtk/resources.c
+resources.o: gtk/resources.c gtk/dmail.gresource.xml
 dmail.o: dmail.c dmail.h config.h
 backend.o: backend.c backend.h
 receive.o: receive.c sendrecv.h
