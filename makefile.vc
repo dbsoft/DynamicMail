@@ -69,8 +69,7 @@ OBJS =	dmail.obj \
 	send.obj \
 	parse.obj \
 	account.obj \
-	datetime.obj \
-	winmain.obj
+	datetime.obj
 	
 all: dmail.exe
 
