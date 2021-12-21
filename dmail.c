@@ -1195,19 +1195,19 @@ int message_dialog(MailParsed *mp, int readonly, int reply, char *text)
 
 	dw_window_set_style(stext, DW_DT_VCENTER, DW_DT_VCENTER);
 
-	dw_box_pack_start(controlbox, stext, 100, -1, TRUE, FALSE, 2);
+	dw_box_pack_start(controlbox, stext, 100, DW_SIZE_AUTO, TRUE, FALSE, 2);
 
 	stext = dw_status_text_new("Normal", 1026);
 
 	dw_window_set_style(stext, DW_DT_VCENTER, DW_DT_VCENTER);
 
-	dw_box_pack_start(controlbox, stext, 50, -1, FALSE, FALSE, 2);
+	dw_box_pack_start(controlbox, stext, 50, DW_SIZE_AUTO, FALSE, FALSE, 2);
 
 	stext = dw_status_text_new("MIME", 1026);
 
 	dw_window_set_style(stext, DW_DT_VCENTER, DW_DT_VCENTER);
 
-	dw_box_pack_start(controlbox, stext, 50, -1, FALSE, FALSE, 2);
+	dw_box_pack_start(controlbox, stext, 50, DW_SIZE_AUTO, FALSE, FALSE, 2);
 
 	menubar = dw_menubar_new(window);
 
@@ -1453,19 +1453,19 @@ void dmail_init(void)
 
 	dw_window_set_style(stext1, DW_DT_VCENTER, DW_DT_VCENTER);
 
-	dw_box_pack_start(controlbox, stext1, 20, -1, TRUE, FALSE, 2);
+	dw_box_pack_start(controlbox, stext1, 20, DW_SIZE_AUTO, TRUE, FALSE, 2);
 
 	stext2 = dw_status_text_new("Receive idle.", 1026);
 
 	dw_window_set_style(stext2, DW_DT_VCENTER, DW_DT_VCENTER);
 
-	dw_box_pack_start(controlbox, stext2, 20, -1, TRUE, FALSE, 2);
+	dw_box_pack_start(controlbox, stext2, 20, DW_SIZE_AUTO, TRUE, FALSE, 2);
 
 	stext3 = dw_status_text_new("Send idle.", 1026);
 
 	dw_window_set_style(stext3, DW_DT_VCENTER, DW_DT_VCENTER);
 
-	dw_box_pack_start(controlbox, stext3, 20, -1, TRUE, FALSE, 2);
+	dw_box_pack_start(controlbox, stext3, 20, DW_SIZE_AUTO, TRUE, FALSE, 2);
 
 	menubar = dw_menubar_new(hwndFrame);
 
