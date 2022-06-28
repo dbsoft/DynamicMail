@@ -1,8 +1,8 @@
 # DynamicMail Makefile
 
 # Edit this as necessary.
-#DWLIBPATH=d:\work\netlabs\dwindows\lib
-#DWINCPATH=d:\work\netlabs\dwindows
+#DWLIBPATH=\work\netlabs\dwindows
+#DWINCPATH=\work\netlabs\dwindows
 
 TARGET=dmail
 

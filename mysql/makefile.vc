@@ -2,7 +2,7 @@
 
 # Either add environment variables for DWLIBDIR and DWINCDIR or
 # Uncomment and change these as needed
-#DWLIBDIR=\netlabs\dwindows\lib
+#DWLIBDIR=\netlabs\dwindows
 #DWINCDIR=\netlabs\dwindows
 
 # Configure alternate compiler based on Clang/LLVM
@@ -45,7 +45,7 @@ CRT_FLAGS = -D_CRT_SECURE_NO_DEPRECATE -D_CRT_SECURE_NO_WARNING -D_WINSOCK_DEPRE
 CFLAGS = -c $(PLATFORM_DEF) -D__WIN32__ -DMSVC -DBUILD_DLL -I$(DWINCDIR) -I. -I.. $(CRT_FLAGS)
 CFLAGS_DEBUG = -Zi
 CFLAGS_COMPILE = -MTd
-LIBS = $(DWLIBDIR)\dw.lib $(DWLIBDIR)\dwcompat.lib mysqlclient.lib wsock32.lib advapi32.lib user32.lib
+LIBS = $(DWLIBDIR)\$(TARGET_CPU)\dw.lib $(DWLIBDIR)\$(TARGET_CPU)\dwcompat.lib mysqlclient.lib wsock32.lib advapi32.lib user32.lib
 RES = 
 LINKFLAGS = -machine:$(TARGET_CPU) -manifest -debug -debugtype:cv
 DLLLINKFLAGS = -dll
